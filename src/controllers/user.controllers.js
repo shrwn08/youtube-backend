@@ -1,5 +1,9 @@
 import User from "../models/user.models.js";
 import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+
+
+dotenv.config()
 
 export const createUser = async (req, res) => {
   try {
@@ -59,12 +63,18 @@ export const loginUser = async (req,res) =>{
                 return res.status(404).json({message : "Invalid Credential"});
         }
 
-        
-       user.password = null;
 
-       res.status(200).json({message : "user login successfully", user})
+       const userRes = {id : user._id, email : user.email}
+
+       const payload = {userId : user._id};
+       const secret = process.env.ACCESS_SECRET_TOKEN;
+       const expiry = {expiresIn:process.env.EXPIRY_SECRET_TOKEN};
+
+       const token = jwt.sign(payload, secret, expiry);
+
+       res.status(200).json({message : "user login successfully", token,user :  userRes});
 
     } catch (error) {
-        res.status(500).json({message:"server error"})
+        res.status(500).json({message:"server error"});
     }
 }

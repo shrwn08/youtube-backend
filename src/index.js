@@ -16,7 +16,8 @@ app.get("/", (req,res) =>{
     res.send("hello world")
 })
 
-app.use("/api/auth", userRouter)
+app.use("/api/auth", userRouter);
+// app.use("/api/", )
 
 
 
