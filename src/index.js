@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import connectDb from "./db/connectDB.js";
 import userRouter from "./routes/authUser.routes.js";
+import upload from "./middleware/multer.middleware.js";
 dotenv.config();
 
 const app = express();
@@ -10,7 +11,9 @@ const port = process.env.PORT;
 app.use(express.json());
 
 
-connectDb()
+connectDb();
+// console.log(upload);
+
 
 app.get("/", (req,res) =>{
     res.send("hello world")

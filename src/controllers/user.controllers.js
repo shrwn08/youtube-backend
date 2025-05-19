@@ -1,4 +1,5 @@
 import User from "../models/user.models.js";
+import { profileUploadMiddleware } from "../middleware/multer.middleware.js";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 
@@ -77,4 +78,40 @@ export const loginUser = async (req,res) =>{
     } catch (error) {
         res.status(500).json({message:"server error"});
     }
+}
+
+
+export const profileUpload = async (req, res)=>{
+    const {id} = req.params;
+
+    if(!id){
+        return res.status(400).json({message : "invalid id "});
+    }
+
+    try {
+        profileUploadMiddleware(req, res, async(err)=>{
+            if(err){
+                return res.status(400).json({message : err.message})
+            }
+    
+            if(!req.file){
+                return res.status(400).json({message : "No file uploaded"})
+            }
+    
+            const avatarPath = req.file.path;
+            const user = await User.findByIdAndUpdate(id,{avatar : avatarPath});
+    
+            if(!user){
+                return res.status(404).json({message : "user not founded"})
+            }
+    
+            const userRes = {id : user._id, email : user.email}
+    
+            res.status(200).json({message : "profile image upload successfully", user : userRes})
+    
+        })
+    } catch (error) {
+        res.status(500).json({message : "Server error"});
+    }
+
 }
