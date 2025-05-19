@@ -1,16 +1,16 @@
 import express from "express";
-import {createUser, loginUser} from "../controllers/user.controllers.js"
+import {createUser, loginUser,profileUpload} from "../controllers/user.controllers.js"
 import { userValidation } from "../validation/user.validation.js";
-import multer from "multer"
+import { profileUploadMiddleware } from "../middleware/multer.middleware.js";
+
 
 
 const userRouter = express.Router();
 
-const upload = multer({ dest: '' })
 
 userRouter.post("/create",userValidation,  createUser);
 userRouter.post("/login",loginUser)
-userRouter.put("/upload-profile", upload.single('avatar'), )
+userRouter.post('/:id/profile', profileUploadMiddleware, profileUpload);
 
 
 
