@@ -13,6 +13,7 @@ const ensureUploadsDirExists = (dirPath) => {
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     const uploadDir = path.join(process.cwd(), "public", "temp", "profile-img");
+    // const uploadDir = "../../public/temp/profile-img"
     ensureUploadsDirExists(uploadDir);
     cb(null, uploadDir);
   },
@@ -25,17 +26,17 @@ const storage = multer.diskStorage({
 
 //file filter like jpge, jpg, png
 
-const fileFilter = (req, file, cb) => {
-  const fileTypes = /jpge|jpg|png/;
-  const extname = fileTypes.test(path.extname(file.originalname).toLowerCase());
-  const mimetype = fileTypes.test(file.mimetype);
-
-  if (extname && mimetype) {
-    return cb(null, true);
-  } else {
-    cb(new Error("Error: Images only!"), false);
+fileFilter: (req, file, cb) => {
+    const validTypes = /jpe?g|png/i;
+    const extValid = validTypes.test(path.extname(file.originalname));
+    const mimeValid = validTypes.test(file.mimetype);
+    
+    if (extValid && mimeValid) {
+      cb(null, true);
+    } else {
+      cb(new Error('Only JPEG/PNG images allowed'));
+    }
   }
-};
 
 //initialize the multer
 const upload = multer({
@@ -43,10 +44,10 @@ const upload = multer({
   limits: {
     fileSize: 5 * 1024 * 1024,
   },
-  fileFilter,
+  files : 1,
 });
 
-console.log(upload);
+// console.log(upload);
 export const profileUploadMiddleware = upload.single("avatar");
 
 export default upload;

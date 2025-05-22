@@ -10,7 +10,7 @@ const userRouter = express.Router();
 
 userRouter.post("/create",userValidation,  createUser);
 userRouter.post("/login",loginUser)
-userRouter.post('/:id/profile', profileUploadMiddleware, profileUpload);
+userRouter.post('/:id/profile', profileUploadMiddleware,  profileUpload);
 
 
 

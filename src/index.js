@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import connectDb from "./db/connectDB.js";
 import userRouter from "./routes/authUser.routes.js";
 import upload from "./middleware/multer.middleware.js";
+import multer from "multer"
 dotenv.config();
 
 const app = express();
@@ -12,7 +13,7 @@ app.use(express.json());
 
 
 connectDb();
-// console.log(upload);
+// console.log("line 16",multer());
 
 
 app.get("/", (req,res) =>{
