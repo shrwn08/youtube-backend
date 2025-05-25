@@ -2,8 +2,8 @@ import express from "express";
 import dotenv from "dotenv";
 import connectDb from "./db/connectDB.js";
 import userRouter from "./routes/authUser.routes.js";
-import upload from "./middleware/multer.middleware.js";
-import multer from "multer"
+import uploadToCloudinary from "./middleware/profileCloudinary.middleware.js";
+import streamifier from "streamifier";
 dotenv.config();
 
 const app = express();
@@ -13,8 +13,8 @@ app.use(express.json());
 
 
 connectDb();
-// console.log("line 16",multer());
-
+console.log("line 16",streamifier);
+// uploadToCloudinary()
 
 app.get("/", (req,res) =>{
     res.send("hello world")
