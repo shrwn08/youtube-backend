@@ -1,5 +1,4 @@
 import { v2 as cloudinary } from "cloudinary";
-import profileCloudinary from "../config/profileCloudinary.config.js";
 import streamifier from "streamifier";
 import dotenv from "dotenv";
 dotenv.config();

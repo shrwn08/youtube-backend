@@ -2,6 +2,11 @@ import mongoose from "mongoose";
 
 const videoSchema = new mongoose.Schema(
   {
+    userId: { 
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true, 
+    },
     title: {
       type: String,
       required: true,
@@ -32,6 +37,10 @@ const videoSchema = new mongoose.Schema(
         "Nonprofits & Activism",
       ],
     },
+    videoURL : {
+      type: String,
+      required: true,
+    },
     thumbnail: {
       type: String,
       trim: true,
@@ -49,7 +58,7 @@ const videoSchema = new mongoose.Schema(
       trim: true,
     },
   },
-  { timestamps }
+  { timestamps : true}
 );
 
 const Video = mongoose.model("Video", videoSchema);
