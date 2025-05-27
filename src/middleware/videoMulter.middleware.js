@@ -3,17 +3,13 @@ import multer from "multer";
 
 const storage = multer.memoryStorage();
 
-const filesFilter = (req, file, cb) => {
-    const validTypes = ["video/mp4", "video/quicktime", "video/webm"];
+const fileFilter = (req, file, cb) => {
+    const validTypes = ["video/mp4", "video/quicktime", "video/webm", "video/x-msvideo"];
 
-    const extValid = validTypes.includes(file.originalname);
-
-    const mimeValid = validTypes.includes(file.mimetype);
-
-    if (extValid && mimeValid) {
+     if (validTypes.includes(file.mimetype)) {
         cb(null, true);
     } else {
-        cb(new Error('Only mp4/quicktime/webm videos allowed'));
+        cb(new Error('Only MP4, QuickTime, or WebM videos allowed'), false);
     }
 }
 
@@ -24,9 +20,9 @@ const uploadvideo = multer({
     limits: {
         fileSize: 200*1024*1024
     },
-    filesFilter
+    fileFilter
 })
 
-export const videoUpload = uploadvideo.single('video');
+export const videoUploadMiddleware = uploadvideo.single('video');
 
 export default uploadvideo;

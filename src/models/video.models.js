@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const videoSchema = new mongoose.Schema(
   {
-    userId: { 
+    user: { 
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true, 
@@ -37,25 +37,30 @@ const videoSchema = new mongoose.Schema(
         "Nonprofits & Activism",
       ],
     },
-    videoURL : {
+    videoUrl : {
       type: String,
       required: true,
     },
+    duration: {
+      type: String,
+      required: true,
+    },
+
     thumbnail: {
       type: String,
       trim: true,
     },
     views: {
-      type: String,
-      trim: true,
+      type: Number,
+      default: 0,
     },
     likes: {
-      type: String,
-      trim: true,
+      type: Number,
+      default: 0,
     },
     dislikes: {
-      type: String,
-      trim: true,
+      type: Number,
+      default: 0,
     },
   },
   { timestamps : true}
