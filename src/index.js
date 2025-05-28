@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import connectDb from "./db/connectDB.js";
 import userRouter from "./routes/authUser.routes.js";
 import videoRoutes from "./routes/video.routes.js";
-import streamifier from "streamifier";
+import commentRoutes from "./routes/comments.routes.js";
 dotenv.config();
 
 const app = express();
@@ -19,7 +19,9 @@ app.get("/", (req,res) =>{
 })
 
 app.use("/api/auth", userRouter);
-app.use("/api/", videoRoutes)
+app.use("/api/", videoRoutes);
+app.use("/api/videos", commentRoutes);
+
 
 
 
