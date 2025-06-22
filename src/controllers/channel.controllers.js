@@ -15,7 +15,7 @@ export const createChannel = async (req, res) => {
     console.log("Error: No authenticated user");
     return res.status(401).json({ message: "Authentication required" });
   }
-
+///sadfv bnksdlcjeb je fe  check
   if (!req.body.channel_name) {
     console.log("Error: Missing channel name");
     return res.status(400).json({ message: "Channel name is required" });
