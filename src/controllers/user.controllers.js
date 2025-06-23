@@ -66,14 +66,14 @@ export const loginUser = async (req, res) => {
     if (!isMatched) {
       return res.status(404).json({ message: "Invalid Credential" });
     }
-
+    console.log("user while login line 69",user)
     const userRes = {
       id: user._id,
       fullname: user.fullname,
       username: user.username,
       email: user.email,
       avatar: user.avatar,
-      isChannel: user.isChannel,
+      channel: user.channel,
     };
 
     const payload = { userId: user._id };

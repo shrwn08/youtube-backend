@@ -40,13 +40,13 @@ export const createChannel = async (req, res) => {
     const channel = await Channel.create(channelData);
 
     console.log("Updating user channel status...");
-    await User.findByIdAndUpdate(req.user._id, { isChannel: true });
-
-    return res.status(201).json({
+        return res.status(201).json({
       success: true,
       message: "Channel created successfully",
       channel
+      
     });
+    
 
   } catch (error) {
     console.error("Error:", error);

@@ -59,16 +59,21 @@ const channelSchema = new mongoose.Schema({
     timestamps: true
 });
 
-// Middleware to set handle to user's username before saving
-channelSchema.pre('save', async function(next) {
-    if (this.isNew) { // Only on first save
-        const user = await mongoose.model('User').findById(this.user);
-        if (user) {
-            this.handle = user.username;
-            this.avatar = user.avatar || this.avatar;
-        }
+
+channelSchema.post("save", async function(doc, next) {
+    try {
+        const User = mongoose.model("User");
+        
+        // Update the user with channel reference and set hasOwnChannel to true
+        await User.findByIdAndUpdate(doc.user, {
+            channel: doc._id,
+            hasOwnChannel: true
+        });
+        
+        next();
+    } catch (error) {
+        next(error);
     }
-    next();
 });
 
 // (Keep your existing static methods and indexes here...)
