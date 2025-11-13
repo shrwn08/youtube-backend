@@ -3,12 +3,12 @@ import User from "../models/user.models.js";
 import profileUploadToCloudinary from "../middleware/profileCloudinary.middleware.js";
 
 export const createChannel = async (req, res) => {
-  console.log("=== Channel Creation Request ===");
-  console.log("UserId:", req.params);
-  console.log("Body:", req.body);
-  console.log("File:", req.file?.originalname);
+  // console.log("=== Channel Creation Request ===");
+  // console.log("UserId:", req.params);
+  // console.log("Body:", req.body);
+  // console.log("File:", req.file?.originalname);
 
-  console.log(req.params)
+  // console.log(req.params)
 
   // Validation
   if (!req.user) {
@@ -27,7 +27,7 @@ export const createChannel = async (req, res) => {
   }
 
   try {
-    console.log("Uploading to Cloudinary...");
+    // console.log("Uploading to Cloudinary...");
     const result = await profileUploadToCloudinary(req.file);
     console.log(req.params.id)
     const channelData = {
@@ -36,10 +36,10 @@ export const createChannel = async (req, res) => {
       avatar: result.secure_url,
     };
 
-    console.log("Creating channel in DB...");
+    // console.log("Creating channel in DB...");
     const channel = await Channel.create(channelData);
 
-    console.log("Updating user channel status...");
+    // console.log("Updating user channel status...");
         return res.status(201).json({
       success: true,
       message: "Channel created successfully",

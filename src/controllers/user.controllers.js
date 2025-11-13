@@ -4,9 +4,6 @@ import User from "../models/user.models.js";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import profileUploadToCloudinary from "../middleware/profileCloudinary.middleware.js";
-import fs from "fs";
-import path from "path";
-import { log } from "console";
 
 // Load environment variables
 dotenv.config();
@@ -66,7 +63,7 @@ export const loginUser = async (req, res) => {
     if (!isMatched) {
       return res.status(404).json({ message: "Invalid Credential" });
     }
-    console.log("user while login line 69",user)
+    // console.log("user while login line 69",user)
     const userRes = {
       id: user._id,
       fullname: user.fullname,

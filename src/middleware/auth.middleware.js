@@ -8,6 +8,9 @@ dotenv.config();
 const verifyToken = async (req,res,next) =>{
     const authHeader = req.headers.authorization;
 
+    console.log("authHeader",authHeader);
+    
+
     if(!authHeader || !authHeader.startwith("Bearer")){
         return res.status(401).json({
             message : "unauthorized, token is missing"

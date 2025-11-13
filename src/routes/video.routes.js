@@ -1,17 +1,29 @@
-import express from "express"
+import express from "express";
 import verifyToken from "../utils/verification.utils.js";
-import {videoUploadMiddleware } from "../middleware/videoMulter.middleware.js";
-import { uploadVideo,getAllVideos,getShorts } from "../controllers/video.controllers.js";
+import { videoUploadMiddleware } from "../middleware/videoMulter.middleware.js";
+import { 
+  uploadVideo,
+  getAllVideos,
+  getShorts,
+  confirmUploadCompletion 
+} from "../controllers/video.controllers.js";
+import { cleanupFailedUpload } from "../middleware/cleanup.middleware.js";
 
+const videoRoutes = express.Router();
 
-const videoRoutes = express.Router()
+videoRoutes.post('/upload',
+  verifyToken,
+  videoUploadMiddleware,
+  uploadVideo,
+  cleanupFailedUpload // Error handling middleware
+);
 
+videoRoutes.post('/:videoId/complete',
+  verifyToken,
+  confirmUploadCompletion
+);
 
-videoRoutes.post("/upload-video", verifyToken, videoUploadMiddleware,uploadVideo);
 videoRoutes.get("/videos", getAllVideos);
-videoRoutes.get("/shorts",getShorts)
-
-
-
+videoRoutes.get("/shorts", getShorts);
 
 export default videoRoutes;
