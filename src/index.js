@@ -6,6 +6,7 @@ import userRouter from "./routes/authUser.routes.js";
 import videoRoutes from "./routes/video.routes.js";
 import commentRoutes from "./routes/comments.routes.js";
 import channelRoutes from "./routes/channel.routes.js";
+import replyRoutes from "./routes/reply.routes.js"; 
 
 // Load environment variables
 dotenv.config();
@@ -24,7 +25,7 @@ const corsOptions = {
 // Middleware setup
 app.use(cors(corsOptions)); // Enable CORS with options
 app.use(express.json()); // Parse JSON bodies
-app.use(express.urlencoded()); //for formdata
+app.use(express.urlencoded({ extended: true })); //for formdata
 
 // Database connection
 connectDb();
@@ -38,6 +39,7 @@ app.get("/", (req, res) => {
 app.use("/api/auth", userRouter); // Authentication routes
 app.use("/api/videos", videoRoutes); // Video routes
 app.use("/api/comments", commentRoutes); // Comment routes
+app.use("/api/replies", replyRoutes); // reply routes
 app.use("/api",channelRoutes) //channel routes
 
 // Error handling middleware (basic example)

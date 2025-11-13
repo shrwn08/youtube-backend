@@ -3,19 +3,13 @@ import User from "../models/user.models.js";
 import profileUploadToCloudinary from "../middleware/profileCloudinary.middleware.js";
 
 export const createChannel = async (req, res) => {
-  // console.log("=== Channel Creation Request ===");
-  // console.log("UserId:", req.params);
-  // console.log("Body:", req.body);
-  // console.log("File:", req.file?.originalname);
-
-  // console.log(req.params)
 
   // Validation
   if (!req.user) {
     console.log("Error: No authenticated user");
     return res.status(401).json({ message: "Authentication required" });
   }
-///sadfv bnksdlcjeb je fe  check
+
   if (!req.body.channel_name) {
     console.log("Error: Missing channel name");
     return res.status(400).json({ message: "Channel name is required" });
@@ -36,10 +30,10 @@ export const createChannel = async (req, res) => {
       avatar: result.secure_url,
     };
 
-    // console.log("Creating channel in DB...");
+    
     const channel = await Channel.create(channelData);
 
-    // console.log("Updating user channel status...");
+    
         return res.status(201).json({
       success: true,
       message: "Channel created successfully",

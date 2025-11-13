@@ -1,20 +1,35 @@
 import Comments from "../models/comment.models.js";
 
-export const updateComment = async (req, res) => {
+export const createComment = async (req, res) => {
   try {
-      const {videoId } = req.params;
+    const { videoId } = req.params;
     const { content } = req.body;
     const userId = req.user.userId;
 
-    console.log(`userid : ${userId} \n videoId : ${videoId} \n content : ${content} \n`);
-
-    if (!content)
+    if (!content?.trim()) {  //  Add trim() check
       return res.status(400).json({ message: "Content is required" });
+    }
 
-    const comment = await Comments.create({userId, videoId, content});
-    res.status(200).json({ message: "Comment updated successfully",comment });
+    // Add validation for videoId
+    if (!mongoose.Types.ObjectId.isValid(videoId)) {
+      return res.status(400).json({ message: "Invalid video ID" });
+    }
+
+    const comment = await Comments.create({ userId, videoId, content: content.trim() });
+    
+    //  Populate user info before sending response
+    await comment.populate('userId', 'username avatar');
+    
+    res.status(201).json({ 
+      message: "Comment created successfully", 
+      comment 
+    });
   } catch (error) {
-    res.status(500).json({ message: "Server error " });
+    console.error("Create comment error:", error);
+    res.status(500).json({ 
+      message: "Server error",
+      error: error.message 
+    });
   }
 };
 

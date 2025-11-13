@@ -30,16 +30,9 @@ export const createUser = async (req, res) => {
     await user.save();
 
     // Prepare response without sensitive data
-    const userRes = {
-      _id: user._id,
-      fullname: user.fullname,
-      username: user.username,
-      email: user.email,
-      createdAt: user.createdAt,
-      updatedAt: user.updatedAt,
-    };
+    
 
-    res.status(201).json({ message: "user created", user: userRes });
+    res.status(201).json({ message: "user created"});
   } catch (error) {
     res.status(500).json({ message: "There is a server error." });
   }
@@ -87,7 +80,7 @@ export const loginUser = async (req, res) => {
     });
 
     return res.status(200)
-      .json({ message: "User login successfully", token, user: userRes });
+      .json({ message: "User login successfully", userId: userRes.id });
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
