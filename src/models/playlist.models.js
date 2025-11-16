@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+
 /**
  * Playlist schema for user video collections
  */

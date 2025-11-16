@@ -1,4 +1,6 @@
 import Comments from "../models/comment.models.js";
+import mongoose from "mongoose";
+
 
 export const createComment = async (req, res) => {
   try {

@@ -6,7 +6,7 @@ import {
   deleteNotification,
   clearAllNotifications,
   getUnreadCount
-} from '../controllers/notification.controllers.js';
+} from '../controllers/notifications.controllers.js';
 import verifyToken from '../utils/verification.utils.js';
 
 const notificationRoutes = express.Router();

@@ -1,4 +1,6 @@
 import LikedVideo from "../models/likedVideo.models.js";
+import Video from "../models/video.models.js";
+import mongoose from "mongoose";
 
 /**
  * Like a video

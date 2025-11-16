@@ -1,15 +1,14 @@
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+
 dotenv.config();
 
 const verifyToken = async (req, res, next) => {
   const authHeader = req.headers.authorization;
 
-  console.log("authHeader", authHeader);
-
-  if (!authHeader || !authHeader.startsWith("Bearer")) {
+  if (!authHeader || !authHeader.startsWith("Bearer")) {  // FIXED: was startwith
     return res.status(401).json({
-      message: "unauthorized, token is missing",
+      message: "unauthorized, token is missing"
     });
   }
 

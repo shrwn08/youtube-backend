@@ -1,4 +1,7 @@
 import Playlist from "../models/playlist.models.js";
+import Video from "../models/video.models.js";  
+import mongoose from "mongoose";
+
 
 /**
  * Create a new playlist

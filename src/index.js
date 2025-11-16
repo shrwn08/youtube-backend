@@ -3,7 +3,6 @@ import dotenv from "dotenv";
 import cors from "cors";
 import connectDb from "./db/connectDB.js";
 
-
 // Import all routes
 import userRouter from "./routes/authUser.routes.js";
 import videoRoutes from "./routes/video.routes.js";
@@ -12,32 +11,27 @@ import replyRoutes from "./routes/reply.routes.js";
 import channelRoutes from "./routes/channel.routes.js";
 import subscriptionRoutes from "./routes/subscription.routes.js";
 import playlistRoutes from "./routes/playlist.routes.js";
-import likeRoutes from "./routes/like.routes.js";
+import likeRoutes from "./routes/liked.routes.js";
 import historyRoutes from "./routes/history.routes.js";
 import searchRoutes from "./routes/search.routes.js";
-import notificationRoutes from "./routes/notification.routes.js";
+import notificationRoutes from "./routes/notifications.routes.js";
 
-
-
-
-// Load environment variables
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 8080; // Added default port
+const port = process.env.PORT || 8080;
 
-// Configure CORS for your frontend
 const corsOptions = {
   origin: process.env.FRONTEND_URL || "http://localhost:5173",
-  credentials: true, // Allow cookies to be sent
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"]
 };
 
 // Middleware setup
-app.use(cors(corsOptions)); // Enable CORS with options
-app.use(express.json()); // Parse JSON bodies
-app.use(express.urlencoded({ extended: true })); //for formdata
+app.use(cors(corsOptions));
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // Database connection
 connectDb();
@@ -65,35 +59,16 @@ app.get("/", (req, res) => {
 });
 
 // Routes
-// Authentication & User Management
 app.use("/api/auth", userRouter);
-
-// Video Management
 app.use("/api/videos", videoRoutes);
-
-// Comments & Replies
 app.use("/api/comments", commentRoutes);
 app.use("/api/replies", replyRoutes);
-
-// Channel Management
 app.use("/api/channels", channelRoutes);
-
-// Subscriptions
 app.use("/api/subscriptions", subscriptionRoutes);
-
-// Playlists
 app.use("/api/playlists", playlistRoutes);
-
-// Likes
 app.use("/api/likes", likeRoutes);
-
-// Watch History
 app.use("/api/history", historyRoutes);
-
-// Search & Discovery
 app.use("/api/search", searchRoutes);
-
-// Notifications
 app.use("/api/notifications", notificationRoutes);
 
 // 404 handler
@@ -105,14 +80,47 @@ app.use((req, res) => {
   });
 });
 
-// Error handling middleware (basic example)
+// Global error handler
 app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ message: "Something went wrong!" });
+  console.error('Error:', err);
+  
+  // Multer errors
+  if (err.name === 'MulterError') {
+    if (err.code === 'LIMIT_FILE_SIZE') {
+      return res.status(400).json({
+        success: false,
+        message: 'File too large'
+      });
+    }
+  }
+  
+  // Mongoose validation errors
+  if (err.name === 'ValidationError') {
+    return res.status(400).json({
+      success: false,
+      message: 'Validation error',
+      errors: Object.values(err.errors).map(e => e.message)
+    });
+  }
+  
+  // JWT errors
+  if (err.name === 'JsonWebTokenError') {
+    return res.status(401).json({
+      success: false,
+      message: 'Invalid token'
+    });
+  }
+  
+  res.status(err.status || 500).json({
+    success: false,
+    message: process.env.NODE_ENV === 'production' 
+      ? 'Internal server error' 
+      : err.message
+  });
 });
 
-// Start server
 app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-  console.log(`Allowed origin: ${corsOptions.origin}`);
+  console.log(`🚀 Server running on port ${port}`);
+  console.log(`📍 Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`🌐 CORS enabled for: ${corsOptions.origin}`);
 });

@@ -1,4 +1,5 @@
-import Notification from "../models/notification.models.js";
+import Notification from "../models/notifications.models.js";
+import mongoose from "mongoose"; 
 
 /**
  * Create notification (internal helper function)
